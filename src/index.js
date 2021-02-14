@@ -8,7 +8,7 @@ const useConfirm = (message = "", callback, rejection) => {
     return;
   }
   const confirmAction = () => {
-    if (confirm(message)) {
+    if (window.confirm(message)) {
       callback();
     } else {
       rejection();
@@ -19,6 +19,8 @@ const useConfirm = (message = "", callback, rejection) => {
 
 const usePreventLeave = () => {
   const listener = (event) => {
+    //여기에 event가 자동으로 들어가는 이유:
+    // 이벤트가 발생하면 브라우져가 이벤트 정보를 담은 객체를 생성해 자동으로 전달해준
     event.preventDefault();
     event.returnValue = "";
   };
