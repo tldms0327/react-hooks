@@ -3,18 +3,32 @@ import ReactDOM from "react-dom";
 
 import "./styles.css";
 
+//update an iniput
+const useInput = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
+
+  //function
+  const onChange = (event) => {
+    const {
+      target: { value }
+    } = event;
+    setValue(value);
+    console.log(event.target);
+  };
+  return { value, onChange };
+};
+
 const App = () => {
-  //useState returns Array
-  //useState(0)[1]처럼 원하는 원소만 이용할 수도 있다.
-  const [item, setItem] = useState(1);
-  const incrementItem = () => setItem(item + 1);
-  const decrementItem = () => setItem(item - 1);
+  //Mr.가 useInput내로 전달
+  const name = useInput("Mr.");
+
   return (
     <div className="App">
-      <h1> Hello {item} </h1>
-      <h2> Hooks! </h2>
-      <button onClick={incrementItem}>Increment</button>
-      <button onClick={decrementItem}>Decrement</button>
+      <h1> Hello </h1>
+      <h2> Hook </h2>
+      <input placeholder="Name" value={name.value} onChange={name.onChange} />
+      {/* ...을 쓰면 원소의 모든 내용을 unpacking */}
+      <input placeholder="Name" {...name} />
     </div>
   );
 };
