@@ -3,40 +3,39 @@ import ReactDOM from "react-dom";
 
 import "./styles.css";
 
-//update an iniput
-const useInput = (initialValue, validator) => {
-  const [value, setValue] = useState(initialValue);
+const content = [
+  {
+    tab: "Section1",
+    content: "content of the section 1"
+  },
+  {
+    tab: "Section2",
+    content: "content of the section 2"
+  }
+];
 
-  //function
-  const onChange = (event) => {
-    const {
-      target: { value }
-    } = event;
-    let willUpdate = true;
-    //validator로서 함수가 들어왔을 때만 동작
-    if (typeof validator === "function") {
-      willUpdate = validator(value);
-    }
-    if (willUpdate) {
-      setValue(value);
-    }
-    console.log(event.target);
+const useTabs = (initialtab, allTabs) => {
+  //원하는 input이 아닐 땐 kill function
+  if (!allTabs || !Array.isArray(allTabs)) {
+    return;
+  }
+
+  const [currentIndex, setCurrentIndex] = useState(initialtab);
+  return {
+    currentItem: allTabs[currentIndex],
+    changeItem: setCurrentIndex
   };
-  return { value, onChange };
 };
 
 const App = () => {
-  //bool을 리턴하는 함수 정의
-  const maxLen = (value) => value.length <= 10;
-
-  const name = useInput("Mr.", maxLen);
-
+  const { currentItem, changeItem } = useTabs(0, content);
+  console.log("contents:", content);
   return (
     <div className="App">
-      <h1> Hello </h1>
-      <h2> Hook </h2>
-      {/* ...을 쓰면 원소의 모든 내용을 unpacking */}
-      <input placeholder="Name" {...name} />
+      {content.map((section, index) => (
+        <button onClick={() => changeItem(index)}>{section.tab}</button>
+      ))}
+      <div>{currentItem.content}</div>
     </div>
   );
 };
