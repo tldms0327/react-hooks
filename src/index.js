@@ -5,25 +5,26 @@ import "./styles.css";
 
 // useEffect = ComponentDidMount, ComponentWillUnMount, ComponentDidUpdate
 
+const useTitle = (initialTitle) => {
+  const [title, setTitle] = useState(initialTitle);
+  const updateTitle = () => {
+    const htmlTitle = document.querySelector("title");
+    htmlTitle.innerText = title;
+  };
+  //title이 바뀔 때만 위의 내용을 trigger
+  useEffect(updateTitle, [title]);
+  return setTitle;
+};
+
 const App = () => {
-  const say1 = () => console.log("say1");
-  const say2 = () => console.log("say2");
-
-  // 아직 변수가 선언되기 전이라 작동하지 않음
-  useEffect(say1, [number]);
-  const [number, setNumber] = useState(0);
-  const [anumber, setaNumber] = useState(0);
-
-  //useEffect(함수, dependency) -> dependency에 선언한 값이 변할 때만 함수 실행 => componentWillUpdate
-  useEffect(say1, [number]);
-  //dependency가 없을 땐 모든 값이 변할 때마다 실행
-  useEffect(say2);
+  //title의 default값 설정
+  const titleUpdater = useTitle("Loading...");
+  //시간 지연 설정(로딩하고 5초 후에 title이 바뀌게 해보자)
+  setTimeout(() => titleUpdater("home"), 5000);
 
   return (
     <div className="App">
       <h1> Hooks </h1>
-      <button onClick={() => setNumber(number + 1)}>{number}</button>
-      <button onClick={() => setaNumber(anumber + 1)}>{anumber}</button>
     </div>
   );
 };
